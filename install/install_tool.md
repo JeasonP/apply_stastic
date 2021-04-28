@@ -151,6 +151,15 @@
     $ git init
     Initialized empty Git repository in /Users/michael/learngit/.git/
 
+简单操作:
+
+    git add     # 加入到暂存区
+    git commit  # 提交到本地库
+    git push    # 发送给远程库
+    git add -A            //-A表示将所有文件的修改，文件的删除，文件的新建，都添加到暂存区。
+    git commit -m "第一次提交"
+    git push origin master   //最后推送到远程库，也就是Gitee上的项目里。
+
 连接码云:
 
     ssh-keygen -t rsa -C "xxxxx@xxxxx.com"        //生成秘钥 
@@ -166,8 +175,28 @@
 
     ssh -T git@gitee.com
 
+来验证是否连接成功
 
-将仓库与远程仓库关联:
+将仓库与远程仓库关联:(你需要在远程仓库创建项目之后才能进行关联)
 
     git remote add origin git@github.com:michaelliao/learngit.git
 
+    git remote add origin https://gitee.com/YourGiteeName/YourProjName.git 
+
+当你使用git命令行与远程仓库关联之后,vscode会自动将这个项目与远程仓库连接,你就可以直接推送了.
+
+推送到远程仓库:
+
+    git push origin master
+
+## VSCode连接gitee
+
+点击 "文件 > 将文件夹(已经初始化的可被git管理的文件夹)添加到工作区 > E:/YourProjName/ "就完成了。
+
+无需任何配置，VSCode自动获取.git配置实现代码管理： 发生变动的文件或代码会有颜色提示，而且可以对比前后改了哪些地方。
+
+需要上传的时候： 点击+号，加入暂存； 在[ 消息 (按 Ctrl+Enter 提交) ]中输入commit注释； 点击同步图标，push出去。
+
+如果发现中文乱码，我们修改一下配置文件编码，改为utf-8就好了
+
+    git config --global gui.encoding utf-8
