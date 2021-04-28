@@ -124,3 +124,50 @@
 文件夹下,找到pycharm图标,然后将其拖到需要放置的位置即可
 
 ## git简单使用
+
+安装git,并设置用户名和邮箱:
+
+    $:git config --global user.name "Your Name"
+    $:git config --global user.email "email@example.com"
+
+如果用户名或邮箱输入错误需要重置，使用以下命令修改：
+
+　　　　$ git config --global --replace-all user.name "用户名"  
+　　　　$ git config --global --replace-all user.email "邮箱地址"
+
+查看配置:
+
+    git config --list
+
+创建本地仓库:
+
+    $ mkdir learngit
+    $ cd learngit
+    $ pwd
+    /Users/michael/learngit
+
+初始化仓库:
+
+    $ git init
+    Initialized empty Git repository in /Users/michael/learngit/.git/
+
+连接码云:
+
+    ssh-keygen -t rsa -C "xxxxx@xxxxx.com"        //生成秘钥 
+    Generating public/private rsa key pair...
+    三次回车即可生成 ssh key
+
+    cat ~/.ssh/id_rsa.pub                         //显示秘钥
+    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6eNtGpNGwstc....
+
+然后将秘钥填在gitee的:设置->SSH公钥->公钥的窗口中
+
+然后使用
+
+    ssh -T git@gitee.com
+
+
+将仓库与远程仓库关联:
+
+    git remote add origin git@github.com:michaelliao/learngit.git
+
