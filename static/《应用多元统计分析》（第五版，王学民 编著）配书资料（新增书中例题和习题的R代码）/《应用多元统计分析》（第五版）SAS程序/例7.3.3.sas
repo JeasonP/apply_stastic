@@ -1,0 +1,15 @@
+proc princomp data=sasuser.examp733 out=prin;
+    var x1-x8;
+proc sort;
+    by prin1;
+proc print;
+    id region;
+    var prin1 prin2 ;
+proc sort;
+    by prin2;
+proc print;
+    id region;
+    var prin1 prin2 ;
+proc plot;
+    plot prin2*prin1=alphabet/haxis=-4 to 6 by 1 vaxis=-3.5 to 2.5 by 0.5;
+run;

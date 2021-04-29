@@ -1,0 +1,11 @@
+proc corr data=sasuser.examp345;
+    var x1-x3;
+proc corr data=sasuser.examp345 nosimple;
+    var x1;
+	with x3;
+	partial x2;
+proc corr data=sasuser.examp345 nosimple;
+    var x2;
+	with x3;
+	partial x1;
+run;

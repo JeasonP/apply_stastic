@@ -1,0 +1,213 @@
+#*******************************************************
+#*******《应用多元统计分析》（第五版）R代码 ********
+#****************** 王学民   2021.2 ********************
+#从https://anyshare.sufe.edu.cn/#/link/B9F2F217DF9A179950462AF6B590145F下载《应用多元统计分析》（第五版）配书资料，下载的资料中有一个“《应用多元统计分析》（第五版）文本数据（以逗号为间隔）”的文件夹#
+#假定数据存储目录为“C:/mvdata/”#
+#*******************************************************
+
+
+###第十章###
+
+##以下创建一个函数来对典型相关系数进行检验，给出显著的典型数##
+corcoef.test<-function(r, n, p, q, alpha=0.1){
+m<-length(r); Q<-rep(0, m); pvalues<-rep(0, m); lambda <-1
+for (k in m:1){
+lambda<-lambda*(1-r[k]^2);
+Q[k]<--log(lambda)
+}
+s<-0; i<-m
+for (k in 1:m){
+Q[k]<-(n-k+1-1/2*(p+q+3)+s)*Q[k]
+pvalues[k]<-1-pchisq(Q[k], (p-k+1)*(q-k+1))
+s<-s+1/r[k]^2
+}
+for (k in 1:m){
+if (pvalues[k]>alpha){
+i<-k-1; break
+}
+}
+list(Q=round(Q, 3), pvalues=round(pvalues, 3), i=i)
+}
+
+##例10.3.1##
+examp10.3.1<-read.table("C:/mvdata/examp10.3.1.csv", header=T, sep=",") #读取文本文件
+examp10.3.1
+Z<-scale(examp10.3.1[-1]) #数据标准化，相当于接下来从相关阵出发进行典型相关分析
+n<-20; p<-3; q<-3
+ca<-cancor(Z[, 1:p], Z[, (p+1):(p+q)]) #典型相关分析
+round(ca$cor, 4) #典型相关系数，保留4位小数
+A<-sqrt(n-1)*ca$xcoef #计算x的典型系数
+round(A, 4) #保留4位小数
+B<-sqrt(n-1)*ca$ycoef #计算y的典型系数
+round(B, 4)
+ca$xcenter #x的样本均值
+ca$ycenter #y的样本均值
+R<-cor(examp10.3.1[-1]) #计算相关矩阵
+round(R, 4)
+R11<-R[1:p, 1:p]
+R12<-R[1:p, (p+1):(p+q)]
+R21<-R[(p+1):(p+q), 1:p]
+R22<-R[(p+1):(p+q), (p+1):(p+q)]
+round(R11%*%A, 4) #计算x及其典型变量之间的相关系数，保留4位小数
+round(R22%*%B, 4) #计算y及其典型变量之间的相关系数
+round(R12%*%B, 4) #计算x和y的典型变量之间的相关系数
+round(R21%*%A, 4) #计算y和x的典型变量之间的相关系数
+u<-as.matrix(Z[, 1:p])%*%A #x的典型变量得分
+v<-as.matrix(Z[, (p+1):(p+q)])%*%B #y的典型变量得分
+plot(u[, 1], v[, 1], xlab="u1", ylab="v1") #作第一对典型变量得分的散点图
+text(u[, 1], v[, 1], examp10.3.1$i, pos=4, cex=0.6) #为散点添标签
+corcoef.test(r=ca$cor, n=n, p=p, q=q) #使用创建的函数进行检验
+
+##例10.3.1##
+examp10.3.1<-read.table("C:/mvdata/examp10.3.1.csv", header=T, sep=",") #读取文本文件
+examp10.3.1
+Z<-scale(examp10.3.1[-1]) #数据标准化，相当于接下来从相关阵出发进行典型相关分析
+n<-20; p<-3; q<-3
+ca<-cancor(Z[, 1:p], Z[, (p+1):(p+q)]) #典型相关分析
+round(ca$cor, 4) #典型相关系数，保留4位小数
+A<-sqrt(n-1)*ca$xcoef #计算x的典型系数
+round(A, 4) #保留4位小数
+B<-sqrt(n-1)*ca$ycoef #计算y的典型系数
+round(B, 4)
+ca$xcenter #x的样本均值
+ca$ycenter #y的样本均值
+R<-cor(examp10.3.1[-1]) #计算相关矩阵
+round(R, 4)
+R11<-R[1:p, 1:p]
+R12<-R[1:p, (p+1):(p+q)]
+R21<-R[(p+1):(p+q), 1:p]
+R22<-R[(p+1):(p+q), (p+1):(p+q)]
+round(R11%*%A, 4) #计算x及其典型变量之间的相关系数，保留4位小数
+round(R22%*%B, 4) #计算y及其典型变量之间的相关系数
+round(R12%*%B, 4) #计算x和y的典型变量之间的相关系数
+round(R21%*%A, 4) #计算y和x的典型变量之间的相关系数
+u<-as.matrix(Z[, 1:p])%*%A #x的典型变量得分
+v<-as.matrix(Z[, (p+1):(p+q)])%*%B #y的典型变量得分
+plot(u[, 1], v[, 1], xlab="u1", ylab="v1") #作第一对典型变量得分的散点图
+text(u[, 1], v[, 1], examp10.3.1$i, pos=4, cex=0.6) #为散点添标签
+corcoef.test(r=ca$cor, n=n, p=p, q=q) #使用创建的函数进行检验
+
+##例10.3.2##
+examp10.3.2<-read.table("C:/mvdata/examp10.3.2.csv", header=T, sep=",")
+R<-as.matrix(examp10.3.2[-1])
+rownames(R)<-names(examp10.3.2)[-1] #添加矩阵行名
+R
+n<-784; p<-5; q<-7; m<-min(c(p, q))
+R11<-R[1:p, 1:p]
+R12<-R[1:p, (p+1):(p+q)]
+R21<-R[(p+1):(p+q), 1:p]
+R22<-R[(p+1):(p+q), (p+1):(p+q)]
+cax<-eigen(solve(R11)%*%R12%*%solve(R22)%*%R21)
+cacor<-sqrt(cax$values) #典型相关系数
+round(cacor, 4)
+cay<-eigen(solve(R22)%*%R21%*%solve(R11)%*%R12)
+Dx<-rep(0, m)
+Dy<-rep(0, m)
+for(i in 1:m){
+Dx[i]<-t(cax$vectors[, i])%*%R11%*%cax$vectors[, i]
+Dy[i]<-t(cay$vectors[, i])%*%R22%*%cay$vectors[, i]
+}
+A<-cax$vectors%*%solve(diag(sqrt(Dx))) #计算x的典型系数
+rownames(A)<-names(examp10.3.2)[2:(p+1)] #添加矩阵行名
+round(A, 4)
+B<-cay$vectors[, 1:m]%*%solve(diag(sqrt(Dy))) #计算y的典型系数
+rownames(B)<-names(examp10.3.2)[(p+2):(p+q+1)] #添加矩阵行名
+round(B, 4)
+round(R11%*%A, 4) #计算x及其典型变量之间的相关系数，保留4位小数
+round(R22%*%B, 4) #计算y及其典型变量之间的相关系数
+round(R12%*%B, 4) #计算x和y的典型变量之间的相关系数
+round(R21%*%A, 4) #计算y和x的典型变量之间的相关系数
+corcoef.test(r=cacor, n=n, p=p, q=q) #使用创建的函数进行检验
+
+##习题10.2##
+exec10.2<-read.table("C:/mvdata/exec10.2.csv", header=T, sep=",") #读取文本文件
+R<-as.matrix(exec10.2[-1])
+rownames(R)<-names(exec10.2)[-1] #添加矩阵行名
+R
+n<-140; p<-2; q<-2; m<-min(c(p, q))
+R11<-R[1:p, 1:p]
+R12<-R[1:p, (p+1):(p+q)]
+R21<-R[(p+1):(p+q), 1:p]
+R22<-R[(p+1):(p+q), (p+1):(p+q)]
+cax<-eigen(solve(R11)%*%R12%*%solve(R22)%*%R21)
+cacor<-sqrt(cax$values) #典型相关系数
+round(cacor, 4)
+cay<-eigen(solve(R22)%*%R21%*%solve(R11)%*%R12)
+Dx<-rep(0, m)
+Dy<-rep(0, m)
+for(i in 1:m){
+Dx[i]<-t(cax$vectors[, i])%*%R11%*%cax$vectors[, i]
+Dy[i]<-t(cay$vectors[, i])%*%R22%*%cay$vectors[, i]
+}
+A<-cax$vectors%*%solve(diag(sqrt(Dx))) #计算x的典型系数
+rownames(A)<-names(exec10.2)[2:(p+1)] #添加矩阵行名
+round(A, 4)
+B<-cay$vectors%*%solve(diag(sqrt(Dy))) #计算y的典型系数
+rownames(B)<-names(exec10.2)[(p+2):(p+q+1)] #添加矩阵行名
+round(B, 4)
+round(R11%*%A, 4) #计算x及其典型变量之间的相关系数，保留4位小数
+round(R22%*%B, 4) #计算y及其典型变量之间的相关系数
+round(R12%*%B, 4) #计算x和y的典型变量之间的相关系数
+round(R21%*%A, 4) #计算y和x的典型变量之间的相关系数
+corcoef.test(r=cacor, n=n, p=p, q=q) #使用创建的函数进行检验
+
+##习题10.3##
+exec10.3<-read.table("C:/mvdata/exec10.3.csv", header=T, sep=",") #读取文本文件
+exec10.3
+Z<-scale(exec10.3[-1]) #数据标准化，相当于接下来从相关阵出发进行典型相关分析
+n<-25; p<-2; q<-2
+ca<-cancor(Z[, 1:p], Z[, (p+1):(p+q)]) #典型相关分析
+round(ca$cor, 4) #典型相关系数，保留4位小数
+A<-sqrt(n-1)*ca$xcoef #计算x的典型系数
+round(A, 4)
+B<-sqrt(n-1)*ca$ycoef #计算y的典型系数
+round(B, 4)
+ca$xcenter #x的样本均值
+ca$ycenter #y的样本均值
+R<-cor(exec10.3[-1]) #计算相关矩阵
+round(R, 4)
+R11<-R[1:p, 1:p]
+R12<-R[1:p, (p+1):(p+q)]
+R21<-R[(p+1):(p+q), 1:p]
+R22<-R[(p+1):(p+q), (p+1):(p+q)]
+round(R11%*%A, 4) #计算x及其典型变量之间的相关系数，保留4位小数
+round(R22%*%B, 4) #计算y及其典型变量之间的相关系数
+round(R12%*%B, 4) #计算x和y的典型变量之间的相关系数
+round(R21%*%A, 4) #计算y和x的典型变量之间的相关系数
+u<-as.matrix(Z[, 1:p])%*%A #x的典型变量得分
+v<-as.matrix(Z[, (p+1):(p+q)])%*%B #y的典型变量得分
+plot(u[, 1], v[, 1], xlab="u1", ylab="v1") #作第一对典型变量得分的散点图
+text(u[, 1], v[, 1], exec10.3$i, pos=4, cex=0.6) #为散点添标签
+corcoef.test(r=ca$cor, n=n, p=p, q=q) #使用创建的函数进行检验
+
+##习题10.4##
+exec10.4<-read.table("C:/mvdata/exec10.4.csv", header=T, sep=",")
+R<-as.matrix(exec10.4[-1])
+rownames(R)<-names(exec10.4)[-1] #添加矩阵行名
+R
+n<-110; p<-4; q<-8; m<-min(c(p, q))
+R11<-R[1:p, 1:p]
+R12<-R[1:p, (p+1):(p+q)]
+R21<-R[(p+1):(p+q), 1:p]
+R22<-R[(p+1):(p+q), (p+1):(p+q)]
+cax<-eigen(solve(R11)%*%R12%*%solve(R22)%*%R21)
+cacor<-sqrt(cax$values) #典型相关系数
+round(cacor, 4)
+cay<-eigen(solve(R22)%*%R21%*%solve(R11)%*%R12)
+Dx<-rep(0, m)
+Dy<-rep(0, m)
+for(i in 1:m){
+Dx[i]<-t(cax$vectors[, i])%*%R11%*%cax$vectors[, i]
+Dy[i]<-t(cay$vectors[, i])%*%R22%*%cay$vectors[, i]
+}
+A<-cax$vectors%*%solve(diag(sqrt(Dx))) #计算x的典型系数
+rownames(A)<-names(exec10.4)[2:(p+1)] #添加矩阵行名
+round(A, 4)
+B<-cay$vectors[, 1:m]%*%solve(diag(sqrt(Dy))) #计算y的典型系数
+rownames(B)<-names(exec10.4)[(p+2):(p+q+1)] #添加矩阵行名
+round(B, 4)
+round(R11%*%A, 4) #计算x及其典型变量之间的相关系数，保留4位小数
+round(R22%*%B, 4) #计算y及其典型变量之间的相关系数
+round(R12%*%B, 4) #计算x和y的典型变量之间的相关系数
+round(R21%*%A, 4) #计算y和x的典型变量之间的相关系数
+corcoef.test(r=cacor, n=n, p=p, q=q) #使用创建的函数进行检验

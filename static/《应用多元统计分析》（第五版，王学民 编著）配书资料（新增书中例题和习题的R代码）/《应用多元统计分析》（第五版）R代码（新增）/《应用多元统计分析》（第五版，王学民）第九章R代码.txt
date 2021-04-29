@@ -1,0 +1,202 @@
+#*******************************************************
+#*******《应用多元统计分析》（第五版）R代码 ********
+#****************** 王学民   2021.2 ********************
+#从https://anyshare.sufe.edu.cn/#/link/B9F2F217DF9A179950462AF6B590145F下载《应用多元统计分析》（第五版）配书资料，下载的资料中有一个“《应用多元统计分析》（第五版）文本数据（以逗号为间隔）”的文件夹#
+#假定数据存储目录为“C:/mvdata/”#
+#*******************************************************
+
+
+###第九章###
+
+##例9.2.1、例9.3.1和例9.5.1##
+examp9.2.1<-read.table("C:/mvdata/examp9.2.1.csv", header=T, sep=",") #读取文本文件
+examp9.2.1
+mytable<-xtabs(频数~心理健康状况+父母社会经济地位, examp9.2.1)
+mytable
+addmargins(mytable) #在表格mytable上添加行边缘频数和列边缘频数
+#(1)例9.2.1#
+P<-prop.table(mytable) #对应矩阵
+round(P, 4) #保留4位小数
+R<-prop.table(mytable, 1) #行轮廓矩阵
+round(R, 4)
+C<-prop.table(mytable, 2) #列轮廓矩阵
+round(C , 4)
+round(addmargins(P), 4) #在对应矩阵上添加行边缘频率和列边缘频率，保留4位小数
+install.packages("vcd") #安装vcd包
+library(vcd) #加载vcd包
+mosaic(mytable, 1) #行轮廓马赛克图
+mosaic(mytable, 2) #列轮廓马赛克图
+#(2)例9.3.1#
+chisq.test(mytable) #行、列独立的卡方检验
+#(3)例9.5.1#
+library(MASS) #加载MASS包
+ca<-corresp(mytable, nf=3) #对应分析，计算前3维（本例只有3维）
+round(ca$cor, 4) #奇异值，保留4位小数
+inertia<-ca$cor^2 #（主）惯量
+round(inertia, 4)
+total<-sum(inertia) #总惯量
+round(total, 4)
+proportion<-inertia/sum(inertia) #贡献率
+round(proportion, 4)
+cumproportion<-cumsum(proportion) #累计贡献率
+round(cumproportion, 4)
+X<-ca$rscore%*%diag(ca$cor) #行点坐标
+round(X, 4)
+Y<-ca$cscore%*%diag(ca$cor) #列点坐标
+round(Y, 4)
+biplot(ca, xlab="c1", ylab="c2") #对应分析图
+abline(v=0, h=0, lty=3) #划分象限
+expected<-chisq.test(mytable)$expected #行、列独立情形下的期望频数
+round(addmargins(expected), 4) #在矩阵expected上添加行边缘频数和列边缘频数，保留4位小数
+
+##例9.5.2##
+examp9.5.2<-read.table("C:/mvdata/examp9.5.2.csv", header=T, sep=",") #读取文本文件
+examp9.5.2
+mytable<-xtabs(频数~奶酪添加剂+响应, examp9.5.2)
+mytable
+addmargins(mytable) #在表格mytable上添加行边缘频数和列边缘频数
+P<-prop.table(mytable) #对应矩阵
+round(P, 4) #保留4位小数
+R<-prop.table(mytable, 1) #行轮廓矩阵
+round(R, 4)
+C<-prop.table(mytable, 2) #列轮廓矩阵
+round(C , 4)
+round(addmargins(P), 4) #在对应矩阵上添加行边缘频率和列边缘频率，保留4位小数
+install.packages("vcd") #安装vcd包
+library(vcd) #加载vcd包
+mosaic(mytable, 1) #行轮廓马赛克图
+mosaic(mytable, 2) #列轮廓马赛克图
+chisq.test(mytable) #行、列独立的卡方检验
+library(MASS) #加载MASS包
+ca<-corresp(mytable, nf=3) #对应分析，计算前3维（本例只有3维）
+round(ca$cor, 4) #奇异值，保留4位小数
+inertia<-ca$cor^2 #（主）惯量
+round(inertia, 4)
+total<-sum(inertia) #总惯量
+round(total, 4)
+proportion<-inertia/sum(inertia) #贡献率
+round(proportion, 4)
+cumproportion<-cumsum(proportion) #累计贡献率
+round(cumproportion, 4)
+X<-ca$rscore%*%diag(ca$cor) #行点坐标
+round(X, 4)
+Y<-ca$cscore%*%diag(ca$cor) #列点坐标
+round(Y, 4)
+biplot(ca, xlab="c1", ylab="c2") #对应分析图
+abline(v=0, h=0, lty=3) #划分象限
+expected<-chisq.test(mytable)$expected #行、列独立情形下的期望频数
+round(addmargins(expected), 4) #在矩阵expected上添加行边缘频数和列边缘频数，保留4位小数
+
+##习题9.1##
+exec9.1<-read.table("C:/mvdata/exec9.1.csv", header=T, sep=",") #读取文本文件
+exec9.1 # 1——4万元以下，2——4万至8万元，3——8万元以上，A——非常不满意，B——有些不满意，C——比较满意，D——非常满意
+mytable<-xtabs(频数~收入+职业满意度, exec9.1)
+mytable
+addmargins(mytable) #在表格mytable上添加行边缘频数和列边缘频数
+P<-prop.table(mytable) #对应矩阵
+round(P, 4) #保留4位小数
+R<-prop.table(mytable, 1) #行轮廓矩阵
+round(R, 4)
+C<-prop.table(mytable, 2) #列轮廓矩阵
+round(C , 4)
+round(addmargins(P), 4) #在对应矩阵上添加行边缘频率和列边缘频率，保留4位小数
+install.packages("vcd") #安装vcd包
+library(vcd) #加载vcd包
+mosaic(mytable, 1) #行轮廓马赛克图
+mosaic(mytable, 2) #列轮廓马赛克图
+chisq.test(mytable) #行、列独立的卡方检验
+library(MASS) #加载MASS包
+ca<-corresp(mytable, nf=2) #对应分析，计算前2维（本题只有2维）
+round(ca$cor, 4) #奇异值，保留4位小数
+inertia<-ca$cor^2 #（主）惯量
+round(inertia, 4)
+total<-sum(inertia) #总惯量
+round(total, 4)
+proportion<-inertia/sum(inertia) #贡献率
+round(proportion, 4)
+cumproportion<-cumsum(proportion) #累计贡献率
+round(cumproportion, 4)
+X<-ca$rscore%*%diag(ca$cor) #行点坐标
+round(X, 4)
+Y<-ca$cscore%*%diag(ca$cor) #列点坐标
+round(Y, 4)
+biplot(ca, xlab="c1", ylab="c2") #对应分析图
+abline(v=0, h=0, lty=3) #划分象限
+expected<-chisq.test(mytable)$expected #行、列独立情形下的期望频数
+round(addmargins(expected), 4) #在矩阵expected上添加行边缘频数和列边缘频数，保留4位小数
+
+##习题9.2##
+exec9.2<-read.table("C:/mvdata/exec9.2.csv", header=T, sep=",") #读取文本文件
+exec9.2
+mytable<-xtabs(频数~考古场所+陶器类型, exec9.2)
+mytable
+addmargins(mytable) #在表格mytable上添加行边缘频数和列边缘频数
+P<-prop.table(mytable) #对应矩阵
+round(P, 4) #保留4位小数
+R<-prop.table(mytable, 1) #行轮廓矩阵
+round(R, 4)
+C<-prop.table(mytable, 2) #列轮廓矩阵
+round(C , 4)
+round(addmargins(P), 4) #在对应矩阵上添加行边缘频率和列边缘频率，保留4位小数
+install.packages("vcd") #安装vcd包
+library(vcd) #加载vcd包
+mosaic(mytable, 1) #行轮廓马赛克图
+mosaic(mytable, 2) #列轮廓马赛克图
+chisq.test(mytable) #行、列独立的卡方检验
+library(MASS) #加载MASS包
+ca<-corresp(mytable, nf=3) #对应分析，计算前3维（本题只有3维）
+round(ca$cor, 4) #奇异值，保留4位小数
+inertia<-ca$cor^2 #（主）惯量
+round(inertia, 4)
+total<-sum(inertia) #总惯量
+round(total, 4)
+proportion<-inertia/sum(inertia) #贡献率
+round(proportion, 4)
+cumproportion<-cumsum(proportion) #累计贡献率
+round(cumproportion, 4)
+X<-ca$rscore%*%diag(ca$cor) #行点坐标
+round(X, 4)
+Y<-ca$cscore%*%diag(ca$cor) #列点坐标
+round(Y, 4)
+biplot(ca, xlab="c1", ylab="c2") #对应分析图
+abline(v=0, h=0, lty=3) #划分象限
+expected<-chisq.test(mytable)$expected #行、列独立情形下的期望频数
+round(addmargins(expected), 4) #在矩阵expected上添加行边缘频数和列边缘频数，保留4位小数
+
+##习题9.3##
+exec9.3<-read.table("C:/mvdata/exec9.3.csv", header=T, sep=",") #读取文本文件
+exec9.3
+mytable<-xtabs(频数~学科+年, exec9.3)
+mytable
+addmargins(mytable) #在表格mytable上添加行边缘频数和列边缘频数
+P<-prop.table(mytable) #对应矩阵
+round(P, 4) #保留4位小数
+R<-prop.table(mytable, 1) #行轮廓矩阵
+round(R, 4)
+C<-prop.table(mytable, 2) #列轮廓矩阵
+round(C , 4)
+round(addmargins(P), 4) #在对应矩阵上添加行边缘频率和列边缘频率，保留4位小数
+install.packages("vcd") #安装vcd包
+library(vcd) #加载vcd包
+mosaic(mytable, 1) #行轮廓马赛克图
+mosaic(mytable, 2) #列轮廓马赛克图
+chisq.test(mytable) #行、列独立的卡方检验
+library(MASS) #加载MASS包
+ca<-corresp(mytable, nf=3) #对应分析，计算前3维（本题共有5维）
+round(ca$cor, 4) #奇异值，保留4位小数
+inertia<-ca$cor^2 #（主）惯量
+round(inertia, 4)
+total<-sum(inertia) #总惯量
+round(total, 4)
+proportion<-inertia/sum(inertia) #贡献率
+round(proportion, 4)
+cumproportion<-cumsum(proportion) #累计贡献率
+round(cumproportion, 4)
+X<-ca$rscore%*%diag(ca$cor) #行点坐标
+round(X, 4)
+Y<-ca$cscore%*%diag(ca$cor) #列点坐标
+round(Y, 4)
+biplot(ca, xlab="c1", ylab="c2") #对应分析图
+abline(v=0, h=0, lty=3) #划分象限
+expected<-chisq.test(mytable)$expected #行、列独立情形下的期望频数
+round(addmargins(expected), 4) #在矩阵expected上添加行边缘频数和列边缘频数，保留4位小数

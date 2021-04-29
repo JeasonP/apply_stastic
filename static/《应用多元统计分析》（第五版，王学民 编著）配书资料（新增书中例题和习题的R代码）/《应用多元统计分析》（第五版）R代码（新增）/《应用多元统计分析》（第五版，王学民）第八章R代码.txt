@@ -1,0 +1,201 @@
+#*******************************************************
+#*******《应用多元统计分析》（第五版）R代码 ********
+#****************** 王学民   2021.2 ********************
+#从https://anyshare.sufe.edu.cn/#/link/B9F2F217DF9A179950462AF6B590145F下载《应用多元统计分析》（第五版）配书资料，下载的资料中有一个“《应用多元统计分析》（第五版）文本数据（以逗号为间隔）”的文件夹#
+#假定数据存储目录为“C:/mvdata/”#
+#*******************************************************
+
+
+###第八章###
+
+##例8.3.1##
+exec6.5<-read.table("C:/mvdata/exec6.5.csv", header=T, sep=",") #读取文本文件
+round(cor(exec6.5[3:10]), 3) #相关矩阵, 保留3位小数
+install.packages("psych") #安装psych包
+library(psych) #加载psych包
+pc<-principal(exec6.5[3:10], nfactors=2, residuals=T, rotate="none") #主成分法因子分析，选取2个因子，残差矩阵，未旋转
+pc$loadings #因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(pc$communality, 3) #共性方差, 保留3位小数
+residual<-pc$residual-diag(diag(pc$residual)) #残差矩阵
+round(residual, 3) #保留3位小数
+rc<-principal(exec6.5[3:10], nfactors=2, rotate="varimax", score=T) #主成分法因子分析，选取2个因子，使用最大方差旋转法，计算因子得分（缺省时为回归法）
+rc$loadings #旋转后的因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+factor.plot(rc, xlim=c(0, 1.0), ylim=c(0, 1.0)) #因子载荷图
+round(rc$weights, 3) #标准化得分系数, 保留3位小数
+scores<-cbind(exec6.5[1], round(rc$scores, 3)) #将国家（或地区）名称与前2个因子得分合并
+scores
+attach(scores) #将数据框添加到R的搜索路径中
+plot(RC1, RC2, xlim=c(-1.5, 4), ylim=c(-2, 2)) #作散点图
+text(RC1, RC2, exec6.5$nation, pos=4, cex=0.6) #为散点添标签
+detach(scores) #将数据框从搜索路径中移除
+abline(v=0, h=0, lty=3) #划分象限
+
+##例8.3.2##
+exec6.5<-read.table("C:/mvdata/exec6.5.csv", header=T, sep=",") #读取文本文件
+install.packages("psych") #安装psych包
+library(psych) #加载psych包
+fapa<-fa(exec6.5[3:10], nfactors=2, residuals=T, rotate="none", fm="pa") #主因子法因子分析，选取2个因子，残差矩阵，未旋转
+fapa$loadings #因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(fapa$communality, 3) #共性方差, 保留3位小数
+residual<-fapa$residual-diag(diag(fapa$residual)) #残差矩阵
+round(residual, 3) #保留3位小数
+fapa.varimax<-fa(exec6.5[3:10], nfactors=2, rotate="varimax", fm="pa", score=T) #主因子法因子分析，选取2个因子，使用最大方差旋转法，计算因子得分（缺省时为回归法）
+fapa.varimax$loadings #旋转后的因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+factor.plot(fapa.varimax, xlim=c(0, 1.0), ylim=c(0, 1.0)) #因子载荷图
+round(fapa.varimax$weights, 3) #标准化得分系数, 保留3位小数
+scores<-cbind(exec6.5[1], round(fapa.varimax$scores, 3)) #将国家（或地区）名称与前2个因子得分合并
+scores
+attach(scores) #将数据框添加到R的搜索路径中
+plot(PA1, PA2, xlim=c(-1.5, 4), ylim=c(-2, 2)) #作散点图
+text(PA1, PA2, exec6.5$nation, pos=4, cex=0.6) #为散点添标签
+detach(scores) #将数据框从搜索路径中移除
+abline(v=0, h=0, lty=3) #划分象限
+
+##例8.3.3##
+exec6.5<-read.table("C:/mvdata/exec6.5.csv", header=T, sep=",") #读取文本文件
+install.packages("psych") #安装psych包
+library(psych) #加载psych包
+faml<-fa(exec6.5[3:10], nfactors=2, residuals=T, rotate="none", fm="ml") #极大似然法因子分析，选取2个因子，残差矩阵，未旋转
+faml$loadings #因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(faml$communality, 3) #共性方差, 保留3位小数
+residual<-faml$residual-diag(diag(faml$residual)) #残差矩阵
+round(residual, 3) #保留3位小数
+faml.varimax<-fa(exec6.5[3:10], nfactors=2, rotate="varimax", fm="ml", score=T) #极大似然法因子分析，选取2个因子，使用最大方差旋转法，计算因子得分（缺省时为回归法）
+faml.varimax$loadings #旋转后的因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+factor.plot(faml.varimax, xlim=c(0, 1.0), ylim=c(0, 1.0)) #因子载荷图
+round(faml.varimax$weights, 3) #标准化得分系数, 保留3位小数
+scores<-cbind(exec6.5[1], round(faml.varimax$scores, 3)) #将国家（或地区）名称与前2个因子得分合并
+scores
+attach(scores) #将数据框添加到R的搜索路径中
+plot(ML1, ML2, xlim=c(-1.5, 4), ylim=c(-2, 2)) #作散点图
+text(ML1, ML2, exec6.5$nation, pos=4, cex=0.6) #为散点添标签
+detach(scores) #将数据框从搜索路径中移除
+abline(v=0, h=0, lty=3) #划分象限
+
+##例8.4.2##
+#R代码已含在例8.3.1至例8.3.3中#
+
+##例8.4.3##
+examp6.3.7<-read.table("C:/mvdata/examp6.3.7.csv", header=T, sep=",")
+examp6.3.7
+R<-as.matrix(examp6.3.7[-1]) #转换为矩阵
+names<-names(examp6.3.7[-1]) #提取数据框的变量名
+colnames(R)<-names #添加矩阵列名
+rownames(R)<-names #添加矩阵行名
+R
+install.packages("psych") #安装psych包
+library(psych) #加载psych包
+#(1)主成分法#
+pc<-principal(R, nfactors=2, residuals=T, rotate="none") #主成分法因子分析，选取2个因子，残差矩阵，未旋转
+pc$loadings #因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(pc$communality, 3) #共性方差, 保留3位小数
+residual<-pc$residual-diag(diag(pc$residual)) #残差矩阵
+round(residual, 3) #保留3位小数
+rc<-principal(R, nfactors=2, rotate="varimax", score=T) #主成分法因子分析，选取2个因子，使用最大方差旋转法，计算因子得分（缺省时为回归法）
+rc$loadings #旋转后的因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+factor.plot(rc, xlim=c(0, 1.0), ylim=c(0, 1.0)) #因子载荷图
+#(2)主因子法#
+fapa<-fa(R, nfactors=2, residuals=T, rotate="none", fm="pa") #主因子法因子分析，选取2个因子，残差矩阵，未旋转
+fapa$loadings #因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(fapa$communality, 3) #共性方差, 保留3位小数
+residual<-fapa$residual-diag(diag(fapa$residual)) #残差矩阵
+round(residual, 3) #保留3位小数
+fapa.varimax<-fa(R, nfactors=2, rotate="varimax", fm="pa", score=T) #主因子法因子分析，选取2个因子，使用最大方差旋转法，计算因子得分（缺省时为回归法）
+fapa.varimax$loadings #旋转后的因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+factor.plot(fapa.varimax, xlim=c(0, 1.0), ylim=c(0, 1.0)) #因子载荷图
+#(3)极大似然法#
+faml<-fa(R, nfactors=2, residuals=T, rotate="none", fm="ml") #极大似然法因子分析，选取2个因子，残差矩阵，未旋转
+faml$loadings #因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(faml$communality, 3) #共性方差, 保留3位小数
+residual<-faml$residual-diag(diag(faml$residual)) #残差矩阵
+round(residual, 3) #保留3位小数
+faml.varimax<-fa(R, nfactors=2, rotate="varimax", fm="ml", score=T) #极大似然法因子分析，选取2个因子，使用最大方差旋转法，计算因子得分（缺省时为回归法）
+faml.varimax$loadings #旋转后的因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+factor.plot(faml.varimax, xlim=c(0, 1.0), ylim=c(0, 1.0)) #因子载荷图
+
+##例8.4.4##
+examp8.4.4<-read.table("C:/mvdata/examp8.4.4.csv", header=T, sep=",") #读取文本文件
+head(examp8.4.4)
+round(cor(examp8.4.4[3:12]), 3) #相关矩阵, 保留3位小数
+install.packages("psych") #安装psych包
+library(psych) #加载psych包
+#(1)取3个因子#
+pc<-principal(examp8.4.4[3:12], nfactors=3, rotate="none") #主成分法因子分析，选取3个因子，未旋转
+pc$loadings #因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(pc$communality, 3) #共性方差, 保留3位小数
+rc<-principal(examp8.4.4[3:12], nfactors=3, rotate="varimax", score=T) #主成分法因子分析，选取3个因子，使用最大方差旋转法，计算因子得分（缺省时为回归法）
+rc$loadings #旋转后的因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(rc$weights, 3) #标准化得分系数, 保留3位小数
+scores<-cbind(examp8.4.4[2], round(rc$scores, 3)) #将股票名称与前3个因子得分合并
+scores[order(-scores$RC1), ] #按因子1得分降序
+scores[order(-scores$RC2), ] #按因子2得分降序
+scores[order(-scores$RC3), ] #按因子3得分降序
+#(2)取4个因子#
+pc<-principal(examp8.4.4[3:12], nfactors=4, rotate="none") #主成分法因子分析，选取4个因子，未旋转
+pc$loadings #因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(pc$communality, 3) #共性方差, 保留3位小数
+rc<-principal(examp8.4.4[3:12], nfactors=4, rotate="varimax", score=T) #主成分法因子分析，选取4个因子，使用最大方差旋转法，计算因子得分（缺省时为回归法）
+rc$loadings #旋转后的因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(rc$weights, 3) #标准化得分系数, 保留3位小数
+scores<-cbind(examp8.4.4[2], round(rc$scores, 3)) #将股票名称与前4个因子得分合并
+scores[order(-scores$RC4), ] #按因子1得分降序
+scores[order(-scores$RC2), ] #按因子2得分降序
+scores[order(-scores$RC1), ] #按因子3得分降序
+scores[order(-scores$RC3), ] #按因子4得分降序
+
+##例8.5.1##
+#R代码已含在例8.4.4中#
+
+##习题8.4##
+exec8.4<-read.table("C:/mvdata/exec8.4.csv", header=T, sep=",") #读取文本文件
+R<-as.matrix(exec8.4[-1])
+names<-names(exec8.4[-1]) #提取数据框的变量名
+colnames(R)<-names #添加矩阵列名
+rownames(R)<-names #添加矩阵行名
+R
+install.packages("psych") #安装psych包
+library(psych) #加载psych包
+faml<-fa(R, nfactors=4, rotate="none", fm="ml") #极大似然法因子分析，选取2个因子，未旋转
+faml$loadings #因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(faml$communality, 3) #共性方差, 保留3位小数
+faml.varimax<-fa(R, nfactors=4, rotate="varimax", score=T, fm="ml") #极大似然法因子分析，选取4个因子，使用最大方差旋转法，计算因子得分（缺省时为回归法）
+faml.varimax$loadings #旋转后的因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+
+##习题8.5##
+exec8.5<-read.table("C:/mvdata/exec8.5.csv", header=T, sep=",") #读取文本文件
+install.packages("psych") #安装psych包
+library(psych) #加载psych包
+faml<-fa(exec8.5[2:6], nfactors=2, residuals=T, rotate="none", fm="ml") #极大似然法因子分析，选取2个因子，未旋转
+faml$loadings #因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(faml$communality, 3) #共性方差, 保留3位小数
+residual<- faml$residual-diag(diag(faml$residual)) #残差矩阵
+round(residual, 3) #保留3位小数
+faml.varimax<-fa(exec8.5[2:6], nfactors=2, rotate="varimax", fm="ml", score=T) #极大似然法因子分析，选取2个因子，使用最大方差旋转法，计算因子得分（缺省时为回归法）
+faml.varimax$loadings #旋转后的因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+factor.plot(faml.varimax, xlim=c(-0.1, 1.0), ylim=c(-0.1, 1.0)) #因子载荷图
+round(faml.varimax$weights, 3) #标准化得分系数, 保留3位小数
+scores<-cbind(exec8.5[1], round(faml.varimax$scores, 3)) #将编号与前2个因子得分合并
+scores
+attach(scores) #将数据框添加到R的搜索路径中
+plot(ML2, ML1, xlim=c(-1.5, 1.7), ylim=c(-1.7, 1.2)) #作散点图
+text(ML2, ML1, exec8.5[, 1], pos=4, cex=0.6) #为散点添标签
+detach(scores) #将数据框从搜索路径中移除
+abline(v=0, h=0, lty=3) #划分象限
+
+##习题8.6##
+exec8.6<-read.table("C:/mvdata/exec8.6.csv", header=T, sep=",") #读取文本文件
+round(cor(exec8.6[2:16]), 3) #相关矩阵, 保留3位小数
+install.packages("psych") #安装psych包
+library(psych) #加载psych包
+pc<-principal(exec8.6[2:16], nfactors=5, rotate="none") #主成分法因子分析，选取5个因子，未旋转
+pc$loadings #因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(pc$communality, 3) #共性方差, 保留3位小数
+rc<-principal(exec8.6[2:16], nfactors=5, rotate="varimax", score=T) #主成分法因子分析，选取5个因子，使用最大方差旋转法，计算因子得分（缺省时为回归法）
+rc$loadings #旋转后的因子载荷矩阵及其列元素的平方和，所解释的总方差的比例及累计比例
+round(rc$weights, 3) #标准化得分系数, 保留3位小数
+scores<-cbind(exec8.6[1], round(rc$scores, 3)) #将应征者与前五个因子得分合并
+scores[order(-scores$RC1), ] #按因子1得分降序
+scores[order(-scores$RC2), ] #按因子2得分降序
+scores[order(-scores$RC3), ] #按因子3得分降序
+scores[order(-scores$RC4), ] #按因子4得分降序
+scores[order(-scores$RC5), ] #按因子5得分降序

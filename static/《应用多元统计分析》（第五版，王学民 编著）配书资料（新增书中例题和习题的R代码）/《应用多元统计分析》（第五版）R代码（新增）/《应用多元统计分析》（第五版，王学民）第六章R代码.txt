@@ -1,0 +1,116 @@
+#*******************************************************
+#*******《应用多元统计分析》（第五版）R代码 ********
+#****************** 王学民   2021.2 ********************
+#从https://anyshare.sufe.edu.cn/#/link/B9F2F217DF9A179950462AF6B590145F下载《应用多元统计分析》（第五版）配书资料，下载的资料中有一个“《应用多元统计分析》（第五版）文本数据（以逗号为间隔）”的文件夹#
+#假定数据存储目录为“C:/mvdata/”#
+#*******************************************************
+
+
+###第六章###
+
+##例6.3.3##
+examp6.3.3<-read.table("C:/mvdata/examp6.3.3.csv", header=T, row.names="region", sep=",") #读取文本文件
+d<-dist(scale(examp6.3.3), method="euclidean", diag=T, upper=F, p=2) #method为距离计算方法，缺省时为"euclidean"（欧氏距离），还包括："manhattan"（绝对值距离），"minkowski"（明氏距离），"canberra"（兰氏距离）等
+#diag为是否包括对角线元素（缺省时为F），upper为是否包括上三角距离（缺省时为F），p为明氏距离的幂（p=2即为欧氏距离）
+#或
+d<-dist(scale(examp6.3.3), diag=T) #略去取缺省值的部分
+hc<-hclust(d, "ward.D") #离差平方和法
+#方法还包括："single"（最短距离法），"complete"（最长距离法），"average"（类平均法），"centroid"（重心法），"median"（中间距离法）等
+cbind(hc$merge, round(hc$height, 2)) #聚类过程
+plot(hc, hang=-1) #聚类树形图，hang指定标签在图形中所处的高度（负值时挂在0下面）
+rect.hclust(hc, k=3) #将聚成的3类用边框界定
+cutree(hc, k=3) #将聚成3类的结果分别以1, 2, 3表示
+
+##例6.3.6##
+library(MASS)
+#(1)图6.3.16#
+examp6.3.3disc3<-read.table("C:/mvdata/examp6.3.3disc3.csv", header=T, sep=",")
+examp6.3.3disc3
+ld<-lda(g~x1+x2+x3+x4+x5+x6+x7+x8, examp6.3.3disc3) #可显示费希尔判别系数及特征值结果
+Z<-predict(ld)
+plot(Z$x, cex=1.5) #按费希尔判别得分作散点图
+text(Z$x[, 1], Z$x[, 2], cex=0.5, examp6.3.3disc3$g) #为散点标号
+#(2)图6.3.17#
+examp6.3.3disc5<-read.table("C:/mvdata/examp6.3.3disc5.csv", header=T, sep=",")
+examp6.3.3disc5
+ld<-lda(g~x1+x2+x3+x4+x5+x6+x7+x8, examp6.3.3disc5)
+Z<-predict(ld)
+plot(Z$x, cex=1.5)
+text(Z$x[, 1], Z$x[, 2], cex=0.5, examp6.3.3disc5$g)
+
+##例6.3.7##
+examp6.3.7<-read.table("C:/mvdata/examp6.3.7.csv", header=T, sep=",")
+d<-as.dist(1-examp6.3.7[-1], diag=T) #转换为距离矩阵
+d
+hc<-hclust(d, "complete") #最长距离法
+plot(hc, hang=-1) #树形图
+rect.hclust(hc, k=2) #将聚成的2类用边框界定
+cutree(hc, k=2) #将聚成2类的结果分别以1, 2表示
+
+##例6.4.1##
+examp6.3.1<-read.table("C:/mvdata/examp6.3.1.csv", header=T, row.names="name", sep=",")
+examp6.3.1
+km<-kmeans(examp6.3.1, 2) #k均值法，聚成2类
+sort(km$cluster) #对聚类结果进行排序
+
+##例6.4.2##
+examp6.3.3<-read.table("C:/mvdata/examp6.3.3.csv", header=T, row.names="region", sep=",") #读取文本文件
+km<-kmeans(scale(examp6.3.3), 5) #数据标准化后使用k均值法，聚成5类，随机选择5行作为初始凝聚点
+sort(km$cluster) #对聚类结果进行排序
+
+##例6.a.1##
+examp6.a.1<-read.table("C:/mvdata/examp6.a.1.csv", header=T, sep=",")
+d<-as.dist(examp6.a.1[-1], diag=T)
+d
+hc<-hclust(d, "complete")
+plot(hc, hang=-1)
+
+##例6.3.1和习题6.1##
+examp6.3.1<-read.table("C:/mvdata/examp6.3.1.csv", header=T, row.names="name", sep=",")
+d<-dist(examp6.3.1, diag=T, p=1) #绝对值距离，此时等价于欧氏距离
+hc<-hclust(d, "single") #最短距离法
+# "complete"（最长距离法），"average"（类平均法），"ward.D"（离差平方和法），"centroid"（重心法），"median"（中间距离法）
+cbind(hc$merge, round(hc$height, 2))
+plot(hc, hang=-1)
+
+##习题6.2##
+exec6.2<-read.table("C:/mvdata/exec6.2.csv", header=T, sep=",")
+d<-as.dist(1-exec6.2[-1], diag=T)
+d
+hc<-hclust(d, "complete")
+plot(hc, hang=-1)
+
+##习题6.3##
+examp6.3.1<-read.table("C:/mvdata/examp6.3.1.csv", header=T, row.names="name", sep=",")
+km<-kmeans(scale(examp6.3.1), c(6, 8)) #k均值法，选择6和8为初始凝聚点
+sort(km$cluster)
+
+##习题6.4##
+examp6.3.3<-read.table("C:/mvdata/examp6.3.3.csv", header=T, row.names="region", sep=",")
+#(1)例6.3.3中#
+d<-dist(examp6.3.3, diag=T)
+hc<-hclust(d, "ward.D") #离差平方和法
+# "single"（最短距离法），"complete"（最长距离法），"average"（类平均法），"centroid"（重心法），"median"（中间距离法）
+cbind(hc$merge, round(hc$height, 2))
+plot(hc, hang=-1)
+rect.hclust(hc, k=3)
+cutree(hc, k=3)
+#(2)例6.4.2中#
+km<-kmeans(examp6.3.3, 5)
+sort(km$cluster)
+
+##习题6.5##
+exec6.5<-read.table("C:/mvdata/exec6.5.csv", header=T, row.names="nation", sep=",")
+exec6.5<-scale(exec6.5)
+d<-dist(exec6.5, diag=T)
+#(1)类平均法#
+hc<-hclust(d, "average")
+cbind(hc$merge, round(hc$height, 2))
+plot(hc, hang=-1)
+#(2)离差平方和法#
+hc<-hclust(d, "ward.D")
+cbind(hc$merge, round(hc$height, 2)) 
+plot(hc, hang=-1)
+#(3)k均值法#
+km<-kmeans(exec6.5[, -1], 5)
+sort(km$cluster)

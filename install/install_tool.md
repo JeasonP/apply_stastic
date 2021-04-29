@@ -248,8 +248,21 @@ tar.gz包-在所有的Linux版本中都能使用，安装过程如下：
 
 ## 让vscode记住github或者gitee的密码
 
-只需要输入:
+一、选中文件-->首选项-->设置，搜索git，在setting.json中添加
+
+    "git.path":"/bin/git.exe"
+
+二、git bush中设置Git 全局设置:
+    git config --global user.name "用户名"
+
+    git config --global user.email "用户邮箱"
+
+三、设置让VSCode记住git账号和密码：
 
     git config --global credential.helper store
 
-就可以实现.(设置完之后第一次仍然需要输入密码,下次就不用了,已经完全记住了.)
+在已安装git且配置好的本机上,我们只需要输入:
+
+    git config --global credential.helper store
+
+就可以直接实现.(设置完之后第一次仍然需要输入密码,下次就不用了,已经完全记住了.)

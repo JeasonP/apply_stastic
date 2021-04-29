@@ -1,0 +1,4 @@
+1.在Windows XP操作系统下，将SAS数据集拷贝到SAS9.3安装驱动器：\Documents and Settings\用户名文件夹\My Documents\My SAS Files\V9.3中即可。
+2.在Windows7操作系统下，将SAS数据集拷贝到windows资源管理器>文档>My SAS Files>9.3中。
+3.在Windows8.1操作系统下，将SAS数据集拷贝到文件资源管理器>这台电脑>文档>My SAS Files>9.3中。
+4.在Windows10操作系统下，将SAS数据集拷贝到文件资源管理器>此电脑>文档>My SAS Files>9.3中。
