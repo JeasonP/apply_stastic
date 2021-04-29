@@ -252,6 +252,4 @@ tar.gz包-在所有的Linux版本中都能使用，安装过程如下：
 
     git config --global credential.helper store
 
-就可以实现.
-
-asd
+就可以实现.(设置完之后第一次仍然需要输入密码,下次就不用了,已经完全记住了.)
