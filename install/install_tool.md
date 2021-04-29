@@ -245,3 +245,11 @@ tar.gz包-在所有的Linux版本中都能使用，安装过程如下：
 ## 如何在VScode中设置jupyter的运行文件路径
 
 默认情况下，我们遵循工作目录的VSCode模式，而不是Jupyter模式。这意味着我们使用当前打开的工作区文件夹的根目录作为启动jupyter笔记本的当前工作目录。为了解决这个问题，你可以像redhatvicky提到的那样在笔记本代码中设置cwd，或者在下面的VSCode设置中更改默认的当前工作目录。在Python->数据科学->笔记本文件根目录因为您可以更改每个工作区的设置，所以当您仅在包含您的文件的工作区中工作时，您可以让它始终默认为特定位置.
+
+## 让vscode记住github或者gitee的密码
+
+只需要输入:
+
+    git config --global credential.helper store
+
+就可以实现.
