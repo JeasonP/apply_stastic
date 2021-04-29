@@ -200,3 +200,48 @@
 如果发现中文乱码，我们修改一下配置文件编码，改为utf-8就好了
 
     git config --global gui.encoding utf-8
+
+## linux任务栏
+
+    1、关闭 xfce4-panel --quit
+    2、关闭 pkill xfconfd
+    3、删除（建议先备份） rm -rf ~/.config/xfce4/panel
+    4、删除（建议先备份） rm -rf ~/.config/xfce4/xfconf/xfce-perchannel-xml/xfce4-panel.xml
+    5、重新运行 /usr/lib/x86_64-linux-gnu/xfce4/xfconf/xfconfd 
+
+Linux下vscode更新:
+    $ sudo rm /etc/apt/preferences.d/nosnap.pref
+    $ sudo apt update
+    $ sudo apt install snapd
+    $ snap install hello-world
+    hello-world 6.4 from Canonical✓ installed
+    $ hello-world
+    Hello World!
+
+### rpm、deb、tar.gz安装包的差别
+
+rpm包-在redhat上的LINUX、SUSE、Fedora可以直接进行安装，不适用于Ubuntu；
+
+deb包-适用于ubuntu ,双击安装；
+
+tar.gz包-在所有的Linux版本中都能使用，安装过程如下：
+（先解压，然后cd命令进入刚才解压的目录，再安装)
+
+        cd /temp/*****.tar.gz/
+        ./install
+        根据提示输入“ENTER”或“安装目录”
+————————————————
+版权声明：本文为CSDN博主「茗君（Major_s）」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+[原文链接：](https://blog.csdn.net/qq_41375318/article/details/102004610)
+
+## deb安装的软件包默认把软件放到哪个目录下面了
+
+    比如你安装的软件是firefox.deb ,其它的软件也行，反正总有个软件名称。
+    #sudo dpkg -L firefox
+    就知道安装到哪个目录和有哪些文件了。
+    #dpkg --contents firefox.deb 效果是一样，显示这个安装包下有哪些文件。
+    #man dpkg for more.
+
+## 如何在VScode中设置jupyter的运行文件路径
+
+默认情况下，我们遵循工作目录的VSCode模式，而不是Jupyter模式。这意味着我们使用当前打开的工作区文件夹的根目录作为启动jupyter笔记本的当前工作目录。为了解决这个问题，你可以像redhatvicky提到的那样在笔记本代码中设置cwd，或者在下面的VSCode设置中更改默认的当前工作目录。在Python->数据科学->笔记本文件根目录因为您可以更改每个工作区的设置，所以当您仅在包含您的文件的工作区中工作时，您可以让它始终默认为特定位置.
