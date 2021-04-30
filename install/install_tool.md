@@ -266,3 +266,45 @@ tar.gz包-在所有的Linux版本中都能使用，安装过程如下：
     git config --global credential.helper store
 
 就可以直接实现.(设置完之后第一次仍然需要输入密码,下次就不用了,已经完全记住了.)
+
+## RStdio一些问题
+
+（1）我一直不太清楚save.image()是干嘛的，是不是每次都会隐式调用存为.Rhistory文件，load()就是每次启动自动调用.Rhistory文件吗?
+
+如果你用Rstudio的话，你会看到右上方的框框里有Environment和History两个平行选项，save.image()的话是保存你的镜像文件，这样你下次再打开Rstudio时就不需要重新导入数据或者函数了。
+
+（2）Rtudio的project、work directory以及右上角panel中的environment是什么概念?
+
+work directory就是你读取或者导入文件时的文件夹，它需要你自己指定好,比如setwd("E:/")就能将文件夹指定在E盘下
+
+（3）每次退出后得到一个R Workspace类型文件和RHISTORY文件有什么区别?
+
+没有什么区别，保存好workspace之后，关闭Rstudio，再打开这个workspace，Rstudio会在environment中恢复workspace中的元素，比如导入的数据。
+
+（4）我每次退出后重新进入的时候就需要把所有包重新library()一遍才行，有什么方法可以直接把所有history中的包一次性加载一遍
+
+这个是必须要做的，平时用到的包你可以在R Script中先写好，这样每次运行的时候在代码最上方先运行，然后再开始写代码。简单快捷
+
+## Linux安装Chrome
+
+[原文地址：](Ohttp://www.linuxidc.com/Linux/2013-10/91857.htm)
+
+安装谷歌浏览器，只需要三行代码：
+
+1.打开终端，输入
+
+    cd /tmp 
+
+对于谷歌Chrome32位版本，使用如下链接：
+
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb
+
+对于64位版本可以使用如下链接下载：
+
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb 
+
+下载完后，运行如下命令安装。
+
+    sudo dpkg -i google-chrome*
+
+    sudo apt-get -f install           //这条命令是解决依赖项的,注意紧跟在安装前一条命令后面
