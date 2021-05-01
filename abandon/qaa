@@ -1,0 +1,7 @@
+1. 如果出现lock报错，删除lock文件就好了
+sudo rm -f /var/lib/apt/lists/lock 删除lock文件
+
+2.解决python调用TensorFlow时出现FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecate
+在/pomtbo/anaconda3/envs/tensorflow/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py文件中,把np.dtype([("quint8", np.uint8, 1)])修改为np.dtype([("quint8", np.uint8, (1,))])就完美解决了
+
+关于vscode中工作区的理解,所为工作区,就是你工作的文件夹,对工作区的证明就是生成了一个文件,这个打开这个文件就是打开了这个工作区.可以再不同的工作区中使用不同的扩展程序,减少程序的臃肿,从而可以节省更多的内存空间.
