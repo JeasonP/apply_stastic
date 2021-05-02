@@ -65,6 +65,8 @@ if __name__ == '__main__':
     calcYangHuisTriangle(5)
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
-bin(99)
-a = bin(99)
-print(a[1])
+a = (44-89.47)**2 + (40-75.07)**2 + (44-85.84)**2 + (42-68.15)**2 + (38-89.02)**2 + (47-77.45)**2
+a = (44-89.47)**2 + (40-75.07)**2
+print(a)
+b = 4*4+(89.47-75.07)**2
+print(14.94523**2)

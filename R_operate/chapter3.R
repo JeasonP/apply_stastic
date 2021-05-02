@@ -12,6 +12,7 @@
 #(1)协方差矩阵和相关矩阵#
 examp3.4.2<-read.table("R_operate/data_csv/examp3.4.2.csv", header=TRUE, sep=",") #从带分隔符的文本文件中导入数据，第一行为变量名
 examp3.4.2
+d<-dist(examp3.4.2[1:6,1:4])
 cov(examp3.4.2) #计算协方差矩阵
 cor(examp3.4.2) #计算相关矩阵
 cov(examp3.4.2[1:3], examp3.4.2[4:7]) #计算一组变量与另一组变量的协方差矩阵
