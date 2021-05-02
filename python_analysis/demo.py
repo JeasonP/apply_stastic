@@ -1,14 +1,14 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 
-path = '/home/pomtbo/apply_stastic/a.txt'
-data = pd.read_csv(path, header=None)
-plt.scatter(data[:][0], data[:][1], maker='+')
+path = '/home/pomtbo/apply_stastic/python_analysis/housing.data'
+data = pd.read_csv(path, header=None, sep = '\t')
+plt.scatter(data[:][0], data[:][1], marker='X')
 data = np.array(data)
 m = data.shape[0]
 theta = np.array([0, 0])
-data = np.hstack[np.ones([m, 1], data)]
+data = np.hstack([np.ones([m, 1]), data])
 y = data[:, 2]
 data = data[:, :2]
 
@@ -32,13 +32,16 @@ def gradient_descent(data, theta, y, eta):
         grad = gradient(data, theta, y)
         theta = theta - eta * grad
         print(theta)
-        if abs(cost_function(data, last_theta, y) - cost_function(data, theta, y)) < 1e-15:
+        if abs(cost_function(data, last_theta, y) - cost_function(data, theta, y)) < 1e-10:
             break
     return theta
 
 
 res = gradient_descent(data, theta, y, 0.0001)
-X = np.arange(3, 25)
+X = np.arange(3, 20)
 Y = res[0] + res[1] * X
 plt.plot(X, Y, color='r')
 plt.show()
+
+
+print('/t')
